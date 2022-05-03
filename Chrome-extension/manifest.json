@@ -1,0 +1,43 @@
+{ 
+  "name": "NSFW Filter",
+  "description": "This extension makes browsing the web safer by censoring NSFW content",
+  "version": "1.0",
+  "author": "Max van Amersfort",
+  "manifest_version": 2,
+  "permissions": [
+    "webRequest",
+    "webNavigation",
+    "storage"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/nsfw-1024.png",
+    "default_popup": "popup.html",
+    "default_title": "NSFW Filter"
+  },
+
+  "content_scripts": [{
+      "matches": [
+        "*://*/*"
+      ],
+      "js": ["jquery.min.js", "lists.js", "firebaseStuff.js", "linkManager.js", "porNo.js", "NSFWSubredditDetection.js"],
+      "run_at": "document_start"
+    },{
+      "matches": [
+        "*://*/*"
+      ],
+      "js":["censor.js"]
+    }],
+  "background": {
+      "service_worker": "background.js"
+    },
+
+  "icons": {
+      "16": "icons/nsfw-16.png",
+      "48": "icons/nsfw-48.png",
+      "128": "icons/nsfw-128.png"
+  },
+
+  "content_security_policy":"script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
+}
+

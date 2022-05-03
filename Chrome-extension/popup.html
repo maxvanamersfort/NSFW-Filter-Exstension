@@ -1,0 +1,283 @@
+
+
+<!doctype html>
+<html>
+  <head>
+    <title>NSFW Pop Up</title>
+    <!-- /////////// CSS ////////// -->
+    <style type="text/css">
+    body {
+      display: block;
+      margin: 10px;
+      background: #FFFAFA;
+      /* white-space: nowrap; */
+    }
+
+    h1 {
+      font-size: 20px;
+      text-align: center;
+    }
+
+    p {
+      font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+      font-size: 15px;
+      font-style: normal;
+      font-variant: normal;
+      margin: 0px;
+      padding: 5px;
+    }
+
+    #container {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      width: 400px;
+    }
+
+    /* https://www.w3schools.com/howto/howto_css_vertical_menu.asp */
+    .vertical-menu {
+      width: 100%; /* Set a width if you like */
+    }
+
+    .vertical-menu a {
+      display: block; /* Make the links appear below each other */
+      padding: 12px; /* Add some padding */
+    }
+
+    /*//////////////////////////////////////////////////////////////////////////////////////////
+    /* Include the padding and border in an element's total width and height */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Remove margins and padding from the list */
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Style the list items */
+    ul li {
+      cursor: pointer;
+      position: relative;
+      padding: 12px 40px 12px 12px;
+      list-style-type: none;
+      background: inherit;
+      font-size: 17px;
+      transition: 0.2s;
+      word-break: break-all;
+      color: #020086;
+
+      /* make the list items unselectable/unhighlightable */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Darker background-color on hover */
+    ul li:hover {
+      background: #1c0080;
+      color: blanchedAlmond;
+    }
+
+    /* Style the "Add" button */
+    .addBtn {
+      /* padding: 10px; */
+      /* float: left; */
+      background-color:blanchedAlmond;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.7s;
+    }
+
+    .addBtn:hover {
+      background-color: red;
+      color: blanchedAlmond;
+    }
+
+    /* Style the "EMERGENCY" button */
+    .emergency {
+      /* padding: 10px; */
+      /* float: left; */
+      background-color: blanchedalmond;
+      color: red;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.4s;
+    }
+
+    .emergency:hover {
+      background-color: red;
+      color: white;
+    }
+
+    /* Style the close button */
+    .delete {
+      position: absolute;
+      float: right;
+      color: #f44336;
+
+      right: 0;
+      top: 0;
+      padding: 12px 16px 12px 16px;
+    }
+
+    .delete:hover {
+      /* background-color: #f44336; */
+      color: white;
+    }
+
+    a:link {
+      color: #750014;
+      background-color: transparent;
+      text-decoration: none;
+      outline: none;
+    }
+
+    a:visited {
+      color: #750014;
+      background-color: transparent;
+      text-decoration: none;
+      outline: none;
+    }
+
+    a:hover {
+      color: red;
+      background-color: transparent;
+      outline: none;
+      /*text-decoration: underline;*/
+    }
+
+    span {
+      font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+      font-size: 14px;
+    }
+
+    /* Style the input */
+    input {
+      border: none;
+      width: 95%;
+      padding: 10px;
+      margin: 10px;
+      margin-top: 0px;
+      margin-bottom: 10px;
+      float: left;
+      font-size: 16px;
+      /* outline-style: solid; */
+      outline-width: 1px;
+      outline-color: black;
+    }
+
+    #setIncognito {
+      color: red;
+      text-decoration: underline;
+    }
+
+    #setIncognito:hover {
+      color: maroon;
+      cursor: pointer;
+    }
+
+    #INPUT_url {
+      background: inherit;
+      border-style: solid;
+      border-width:1px;
+    }
+
+    #INPUT_name {
+      background: inherit;
+      border-style: solid;
+      border-width:1px;
+    }
+  </style>
+    <!--
+  - JavaScript and HTML must be in separate files: see our Content Security
+  - Policy documentation[1] for details and explanation.
+  -
+  - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+  -->
+    <script src="jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
+    <script
+      src="https://www.gstatic.com/firebasejs/5.0.1/firebase-firestore.js"></script>
+    <script src="lists.js"></script>
+    <script src="firebaseStuff.js"></script>
+    <script src="linkManager.js"></script>
+    <!-- Adding the following breaks the popup's interactivity -->
+    <!-- <script src="porNo.js"></script> -->
+  </head>
+  <body>
+    <h1>
+      NSFW Content Filter
+    </h1>
+
+    <div id="container">
+      <div id="vertical-menu" class="vertical-menu">
+        <input id="emergency" class="emergency" style="outline: none;
+          margin-bottom:20px;" type="submit" value="NSFW!!!">
+
+        <p id="setIncognito">
+          
+        </p>
+        <p>
+          Let's say no to nsfw content.
+        </p>
+        <!-- <hr>
+    <p id="message">Cycle Magical Messages</p> -->
+        <hr>
+        <p>
+          Missing URL
+        </p>
+
+        <ul id="websites">
+          <!-- Websites added will be found here when inspecting the popup -->
+        </ul>
+        <!-- <br> -->
+        <p id="ERROR_MSG" style="color:red; font-size:16px; margin-top:10px"></p>
+        <!-- Input field for link -->
+        <p><em>URL:</em></p>
+        <input style="color:black;" type="text" id="INPUT_url" placeholder="Missing Url">
+        <!-- Input field for name -->
+        <p><em>Short Explanation:</em></p>
+        <input style="color:black;" type="text" id="INPUT_name"
+          placeholder="What is this link?">
+        <!-- Add button -->
+        <input id="submit" class="addBtn" style="outline: none;
+          margin-bottom:20px;" type="submit" value="Add!">
+        <br>
+
+        <!-- extra info -->
+
+        <span style="margin-top:0px; margin-bottom:0px; border-width:0px;"
+          title="More resources!">
+          <a href="https://www.addictioncenter.com/community/porn-addiction-hotlines-resources/" target="_blank"><em>More resources!</em></a>
+        </span>
+
+        <span style="margin-top:0px; margin-bottom:0px; border-width:0px;"
+          title="Send an email?">
+          <a href="v.amersfort@gmail.com" target="_blank"><em>Something
+              wrong? Let me know!</em></a>
+
+
+
+        <!-- TODO: Add closing message here "thanks for using pls rate etc" + add charityware       <span style="color:DeepPink;" title="Leave a review"> <a href="https://chrome.google.com/webstore/detail/porno-beta/fkhfpbfakkjpkhnonhelnnbohblaeooj" target="_blank"><em>
+    <span style="color:DeepPink; font-size:16px;">&hearts;</span>
+    PorNo!? Leave a review!</em></a>
+    </span>
+    -->
+        
+       
+
+        <span style="color:red;"><em>Thank you for your support
+            <span style="color:red; font-size:20px;">&hearts;</span></em>
+        </span>
+        <br>
+      </div>
+      <!-- End of vertical-menu -->
+    </div>
+    <!-- Close container -->
+  </body>
+</html>
